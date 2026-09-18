@@ -1,0 +1,10 @@
+﻿$user = "StandardUser"
+Add-LocalGroupMember -Group "Administrators" -Member $user
+Write-Host "$user added to Administrators for 1 hour."
+
+# Background job to remove after 1 hour (3600 seconds)
+Start-Job -ScriptBlock {
+    param($u)
+    Start-Sleep -Seconds 3600
+    Remove-LocalGroupMember -Group "Administrators" -Member $u
+} -ArgumentList $user
